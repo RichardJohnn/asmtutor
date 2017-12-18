@@ -6,6 +6,7 @@ all: ${EXECUTABLE}
 
 %: %.o
 	ld -m elf_i386 $^ -o $@
+	grep -xq "$@" .gitignore || echo $@ >> .gitignore
 
 %.o: %.asm
 	nasm -f elf -g $< -o $@
