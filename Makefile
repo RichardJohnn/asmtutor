@@ -1,14 +1,14 @@
-SOURCES=$(wildcard *.asm)
-OBJECTS=$(SOURCES:.asm=.o)
+SOURCES := $(wildcard *.asm)
+OBJECTS := $(patsubst %.asm,%.o,${SOURCES})
 EXECUTABLE=$(OBJECTS:.o=)
 
-all: $(OBJECTS) $(EXECUTABLE)
+all: ${EXECUTABLE}
 
-$(EXECUTABLE): $(OBJECTS)
-	ld -m elf_i386 $(OBJECTS) -o $@
+%: %.o
+	ld -m elf_i386 $^ -o $@
 
-$(OBJECTS): $(SOURCES)
-	nasm -f elf -g $(SOURCES)
+%.o: %.asm
+	nasm -f elf -g $< -o $@
 
 clean:
 	rm -rf *o $(EXECUTABLE)
